@@ -29,7 +29,8 @@
             </div>
         </div>
         <div class="my-3 text-center">
-            <Button @click="type === 'Edit' ? updateData() : addData()" class="px-3 py-2 bg-purple-300 text-white">{{type}} Employee</Button>
+            <Button @click="type === 'Edit' ? updateData() : addData()"
+                class="px-3 py-2 bg-purple-300 text-white">{{ type }} Employee</Button>
         </div>
     </div>
 </template>
@@ -51,7 +52,21 @@ const about = ref(employeeData.about || '');
 const store = useEmployeeStore();
 const router = useRouter();
 const addInput = () => skills.value.push('');
-const removeInput = (index) => skills.value.splice(index, 1);
+const removeInput = async (index) => {
+    // If it's an update operation, delete the skill from the server
+    if (type === 'Edit') {
+        const skillId = employeeData.skillIds[index];
+        // console.log(employeeData.skillIds[index]);
+        const deleted = await store.deleteSkill(skillId);
+        if (deleted) {
+            // On successful deletion, remove the skill from the local array
+            skills.value.splice(index, 1);
+        }
+    } else {
+        // If it's an add operation, simply remove the skill from the local array
+        skills.value.splice(index, 1);
+    }
+};
 const addData = async () => {
     const formData = {
         firstName: firstName.value,
