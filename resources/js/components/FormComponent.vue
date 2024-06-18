@@ -57,7 +57,7 @@ const removeInput = async (index) => {
     if (type === 'Edit') {
         const skillId = employeeData.skillIds[index];
         // console.log(employeeData.skillIds[index]);
-        const deleted = await store.deleteSkill(skillId);
+        const deleted = await store.deleteSkill(employeeData.id, skillId);
         if (deleted) {
             // On successful deletion, remove the skill from the local array
             skills.value.splice(index, 1);

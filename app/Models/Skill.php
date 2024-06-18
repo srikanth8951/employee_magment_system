@@ -11,8 +11,8 @@ class Skill extends Model
 
     protected $fillable = ['employee_id', 'skill'];
 
-    public function employee()
+    public function employees()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsToMany(Employee::class, 'employee_skills');
     }
 }

@@ -14,6 +14,10 @@ export const useEmployeeStore = defineStore("employee", {
                         ...employee,
                         skills: employee.skills.map((skill) => skill.skill), // Assuming skills is an array of objects with a 'skill' property
                         skillIds: employee.skills.map((skill) => skill.id), // Extracting only skill IDs
+                        // skills: employee.skills.map((skill) => ({
+                        //     id: skill.id,
+                        //     skill: skill.skill,
+                        // })),
                     };
                 });
             } catch (error) {
@@ -50,14 +54,8 @@ export const useEmployeeStore = defineStore("employee", {
                     field_of_employment: employeeData.fieldOfEmployment,
                     about: employeeData.about,
                     available: employeeData.status,
+                    skills: employeeData.skills,
                 });
-
-                for (const skill of employeeData.skills) {
-                    await axios.post(`/employees/${employeeData.id}/skills`, {
-                        skill,
-                    });
-                }
-
                 await this.fetchEmployees();
             } catch (error) {
                 console.error("Error updating employee or skills:", error);
@@ -81,9 +79,9 @@ export const useEmployeeStore = defineStore("employee", {
                 console.error("Error updating employee status:", error);
             }
         },
-        async deleteSkill(skillId) {
+        async deleteSkill(employeeId, skillId) {
             try {
-                await axios.delete(`/skills/${skillId}`);
+                await axios.delete(`/employee-skills/${employeeId}/${skillId}`);
                 return true; // Return true on successful deletion
             } catch (error) {
                 console.error("Error deleting skill:", error);
