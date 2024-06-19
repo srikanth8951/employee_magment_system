@@ -12,14 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('employee_skills', function (Blueprint $table) {
-            if (!Schema::hasColumn('employee_skills', 'id')) {
-                $table->dropColumn('id'); // Optional: remove this if you don't need the auto-incrementing ID
+            if (Schema::hasColumn('employee_skills', 'skill')) {
+                $table->dropColumn('skill');
             }
-            // Add or modify the skill column to be nullable
-            if (!Schema::hasColumn('employee_skills', 'skill')) {
-                $table->string('skill')->nullable();
-            } else {
-                $table->string('skill')->nullable();
+            if (Schema::hasColumn('employee_skills', 'id')) {
+                $table->dropColumn('id');
             }
         });
     }
@@ -30,8 +27,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('employee_skills', function (Blueprint $table) {
-            $table->dropColumn('skill');
-            $table->bigIncrements('id'); // Optional: add this back if you removed it
+            // You may want to recreate the columns if needed
+            if (!Schema::hasColumn('employee_skills', 'skill')) {
+                $table->string('skill')->nullable();
+            }
+            if (!Schema::hasColumn('employee_skills', 'id')) {
+                $table->increments('id');
+            }
         });
     }
 };
