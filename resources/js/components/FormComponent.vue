@@ -29,8 +29,11 @@
             </div>
         </div>
         <div class="my-3 text-center">
-            <Button @click="type === 'Edit' ? updateData() : addData()"
-                class="px-3 py-2 bg-purple-300 text-white">{{ type }} Employee</Button>
+
+            <Button @click="back('home')"
+                class="px-3 py-2 bg-purple-300 text-white mx-1">Back</Button>
+            <Button @click="type === 'Edit' ? updateData() : addData()" class="px-3 py-2 bg-purple-300 text-white">{{
+                type }} Employee</Button>
         </div>
     </div>
 </template>
@@ -40,6 +43,7 @@ import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import { useEmployeeStore } from '@/stores/store';
+import { useToast } from "primevue/usetoast";
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -51,6 +55,8 @@ const designation = ref(employeeData.field_of_employment || '');
 const about = ref(employeeData.about || '');
 const store = useEmployeeStore();
 const router = useRouter();
+const toast = useToast();
+
 const addInput = () => skills.value.push('');
 const removeInput = async (index) => {
     // If it's an update operation, delete the skill from the server
@@ -77,6 +83,7 @@ const addData = async () => {
         status: true
     };
     await store.addEmployee(formData);
+    toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record added successfully', life: 3000 });
     router.push({ name: 'home' });
 };
 const updateData = async () => {
@@ -90,6 +97,10 @@ const updateData = async () => {
         status: employeeData.status
     };
     await store.updateEmployee(formData);
+    toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record updated successfully', life: 3000 });
     router.push({ name: 'home' });
+};
+const back = (route) => {
+    router.push({ name: route });
 };
 </script>

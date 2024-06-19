@@ -34,6 +34,9 @@ import Card from 'primevue/card';
 import { defineProps, ref, watch } from 'vue';
 import ToggleButton from 'primevue/togglebutton';
 import { useEmployeeStore } from '@/stores/store';
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
 
 const props = defineProps(['title', 'content', 'status', 'employeeId']);
 
@@ -43,6 +46,7 @@ const store = useEmployeeStore();
 
 const updateStatus = (employeeId) => {
     store.updateEmployeeStatus(employeeId, checked.value);
+    toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Status updated successfully', life: 3000 });
 };
 
 // Watch for changes in props.status and update checked value

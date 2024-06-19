@@ -1,16 +1,23 @@
 <template>
     <div>
-        
+
         <Card :title="`${employee?.first_name} ${employee?.last_name}`" :content="employee?.field_of_employment"
             :employeeId="employee?.id" :status="employee?.available"></Card>
         <Card title="Skills:" :content="employee?.skills"></Card>
         <Card title="About:" :content="employee?.about"></Card>
         <div class="flex justify-between p-4">
-            <router-link :to="{ name: 'edit', params: { id: employee?.id } }">
-                <Button class="bg-purple-400 text-xl flex justify-center px-4 py-3 text-white rounded-lg">Edit</Button>
+            <router-link :to="{ name: 'home' }">
+                <Button class="bg-purple-400 text-xl flex justify-center px-4 py-3 text-white rounded-lg">Back</Button>
             </router-link>
-            <Button @click="handleDeleteClick" label="Delete"
-                class="bg-purple-400 text-xl flex justify-center px-4 py-3 text-white rounded-lg"></Button>
+            <div class="flex gap-1">
+                <router-link :to="{ name: 'edit', params: { id: employee?.id } }">
+                    <Button
+                        class="bg-purple-400 text-xl flex justify-center px-4 py-3 text-white rounded-lg">Edit</Button>
+                </router-link>
+                <Button @click="handleDeleteClick" label="Delete"
+                    class="bg-purple-400 text-xl flex justify-center px-4 py-3 text-white rounded-lg"></Button>
+            </div>
+
         </div>
     </div>
 </template>
